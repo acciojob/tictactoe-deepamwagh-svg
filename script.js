@@ -1,77 +1,88 @@
 //your JS code here. If required.
-const p1Input = document.getElementById("player-1");
-const p2Input = document.getElementById("player-2");
+const p1 = document.getElementById("player1");
+const p2 = document.getElementById("player2");
 const submitBtn = document.getElementById("submit");
-
 const gameArea = document.getElementById("game-area");
-const messageDiv = document.querySelector(".message");
-const cells = document.querySelectorAll(".cell");
+const message = document.querySelector(".message");
 
 let player1 = "";
 let player2 = "";
-let currentPlayer = "";
 let turn = "x";
-let gameOver = false;
+let currentPlayer = "";
 
-submitBtn.addEventListener("click", () => {
-  player1 = p1Input.value.trim();
-  player2 = p2Input.value.trim();
+submitBtn.addEventListener("click", function () {
 
-  if (!player1 || !player2) {
-    alert("Please enter both player names!");
-    return;
-  }
+  player1 = p1.value.trim();
+  player2 = p2.value.trim();
+
+  if (!player1 || !player2) return;
 
   currentPlayer = player1;
 
+  message.textContent = `${player1}, you're up`;
   document.getElementById("player-input").style.display = "none";
   gameArea.style.display = "block";
-
-  messageDiv.textContent = `${currentPlayer}, you're up`;
 });
 
-const wins = [
-  [1,2,3], [4,5,6], [7,8,9],
-  [1,4,7], [2,5,8], [3,6,9],
-  [1,5,9], [3,5,7]
-];
+const cells = document.querySelectorAll(".cell");
 
 cells.forEach(cell => {
-  cell.addEventListener("click", () => {
-    if (cell.textContent !== "" || gameOver) return;
+  cell.addEventListener("click", function () {
+    if (cell.textContent !== "") return;
 
     cell.textContent = turn;
 
-    if (checkWin(turn)) {
-      messageDiv.textContent = `${currentPlayer} congratulations you won!`;
-      gameOver = true;
+    if (checkWin()) {
+      message.textContent = `${currentPlayer} congratulations you won!`;
+      highlightWin();
       return;
     }
-    switchTurn();
+
+    if (turn === "x") {
+      turn = "o";
+      currentPlayer = player2;
+    } else {
+      turn = "x";
+      currentPlayer = player1;
+    }
+
+    message.textContent = `${currentPlayer}, you're up`;
   });
 });
 
-function switchTurn() {
-  if (turn === "x") {
-    turn = "o";
-    currentPlayer = player2;
-  } else {
-    turn = "x";
-    currentPlayer = player1;
-  }
-  messageDiv.textContent = `${currentPlayer}, you're up`;
+const wins = [
+  [1,2,3],
+  [4,5,6],
+  [7,8,9],
+  [1,4,7],
+  [2,5,8],
+  [3,6,9],
+  [1,5,9],
+  [3,5,7]
+];
+
+function checkWin() {
+  return wins.some(pattern => {
+    const [a, b, c] = pattern;
+    return (
+      document.getElementById(a).textContent === turn &&
+      document.getElementById(b).textContent === turn &&
+      document.getElementById(c).textContent === turn
+    );
+  });
 }
 
-function checkWin(symbol) {
-  for (let combo of wins) {
-    if (combo.every(id => document.getElementById(id).textContent === symbol)) {
-
-      combo.forEach(id => {
-        document.getElementById(id).style.background = "purple";
-        document.getElementById(id).style.color = "white";
-      });
-      return true;
+function highlightWin() {
+  wins.forEach(pattern => {
+    const [a, b, c] = pattern;
+    if (
+      document.getElementById(a).textContent === turn &&
+      document.getElementById(b).textContent === turn &&
+      document.getElementById(c).textContent === turn
+    ) {
+      document.getElementById(a).style.background = "purple";
+      document.getElementById(b).style.background = "purple";
+      document.getElementById(c).style.background = "purple";
     }
-  }
-  return false;
+  });
 }
