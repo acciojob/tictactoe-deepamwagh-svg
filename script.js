@@ -10,7 +10,7 @@ const cells = document.querySelectorAll(".cell");
 let player1 = "";
 let player2 = "";
 let currentPlayer = "";
-let turn = "X";
+let turn = "x";
 let gameOver = false;
 
 submitBtn.addEventListener("click", () => {
@@ -43,7 +43,7 @@ cells.forEach(cell => {
     cell.textContent = turn;
 
     if (checkWin(turn)) {
-      messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+      messageDiv.textContent = `${currentPlayer} congratulations you won!`;
       gameOver = true;
       return;
     }
@@ -52,11 +52,11 @@ cells.forEach(cell => {
 });
 
 function switchTurn() {
-  if (turn === "X") {
-    turn = "O";
+  if (turn === "x") {
+    turn = "o";
     currentPlayer = player2;
   } else {
-    turn = "X";
+    turn = "x";
     currentPlayer = player1;
   }
   messageDiv.textContent = `${currentPlayer}, you're up`;

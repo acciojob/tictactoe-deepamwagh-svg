@@ -34,15 +34,14 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: pink;          /* 🔥 board cell bg pink */
+  background: pink;
   cursor: pointer;
-  border: 2px solid black;   /* 🔥 black border */
+  border: 2px solid black;
 }
 
 .cell:hover {
   background: #ffb6c1;
 }
-
 
 .message {
   margin-top: 20px;
